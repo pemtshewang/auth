@@ -1,5 +1,4 @@
 package com.example.backend.controller;
-
 import com.example.backend.dto.LoginRequest;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
@@ -22,7 +21,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
-        if (user.isPresent() && user.get().getPassword().equals(loginRequest.getPassword())) {
+        if (user.isPresent() && user.get().getPassword().equals(loginRequest.getPassword())){
             return ResponseEntity.ok().body("Login successful");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

@@ -3,8 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, EyeIcon,EyeOffIcon } from "lucide-react";
 import Link from "next/link";
+import {Toast} from "@/components/ui/sonner"
 
 type Credentials = {
   username: string;
@@ -19,8 +20,13 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleLoginSubmit = () => {
+  const handleLoginSubmit = async() => {
     setIsLoading(true);
+    const submitCred = await fetch("http://localhost:3000/api/auth/login",
+    {
+      body:JSON.stringify(credentials),
+    }
+    );
   };
   return (
     <div>
@@ -43,10 +49,22 @@ export default function RegisterPage() {
               placeholder="Username"
             />
           </div>
-          <div>
+          <div className="relative">
+            <div onClick={()=>setShowPassword(!showPassword)}> {
+                showPassword ?
+            <EyeIcon 
+            className="absolute right-0 bottom-1/2 top-1/4 mr-1"
+            />:
+            <EyeOffIcon 
+            className="absolute right-0 bottom-1/2 top-1/4 mr-1"
+            />
+              }
+            </div>
             <Input
               required
-              type="password"
+              type={
+                showPassword ? "text":"password"
+              }
               placeholder="Password"
               onChange={(text) =>
                 setCredentials({
@@ -56,10 +74,23 @@ export default function RegisterPage() {
               }
             />
           </div>
-          <div>
+          <div className="relative">
+            <div onClick={()=>setShowPassword(!showPassword)}>
+              {
+                showPassword ?
+            <EyeIcon 
+            className="absolute right-0 bottom-1/2 top-1/4 mr-1"
+            />:
+            <EyeOffIcon 
+            className="absolute right-0 bottom-1/2 top-1/4 mr-1"
+            />
+              }
+            </div>
             <Input
               required
-              type="password"
+              type={
+                showPassword ? "text":"password"
+              }
               placeholder="Confirm Password"
               onChange={(text) =>
                 setCredentials({
